@@ -1,2 +1,11 @@
 ingress:
   host: example.com
+  apiService: cms-api-api
+  clientService: cms-client-client
+
+nginx-ingress:
+  controller:
+    enableLatencyMetrics: true
+  prometheus:
+    service:
+      create: true

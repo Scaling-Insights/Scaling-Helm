@@ -12,7 +12,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ .Release.Name }}-api
+            name: {{ .Values.ingress.apiService }}
             port:
               number: 80
   - host: {{ .Values.ingress.host }}
@@ -22,6 +22,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ .Release.Name }}-client
+            name: {{ .Values.ingress.clientService }}
             port:
               number: 80

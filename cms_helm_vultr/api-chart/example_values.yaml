@@ -17,6 +17,8 @@ api:
       expiresIn: # Seconds until the Cloudflare token expires (R2 & Stream)
       key:
       uid:
+    cors: 
+      AllowedOrigins: "{'a': 'a'}"
 
 postgresql:
   auth:
