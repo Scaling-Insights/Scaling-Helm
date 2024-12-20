@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-metrics
+  labels:
+    app: {{ .Release.Name }}-metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-metrics
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-metrics
+    spec:
+      tolerations:
+        - key: "Managing"
+          operator: "Exists"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "Managing-node"
+                    operator: In
+                    values:
+                      - "true"
+      containers:
+        - name: metrics
+          image: {{ .Values.metrics.image }}
+          ports:
+            - containerPort: {{ .Values.metrics.service.port }}
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-metrics
+                  key: DB_HOST
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-metrics
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-metrics
+                  key: DB_PASSWORD
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-metrics
+                  key: DB_DATABASE
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-metrics
+                  key: DB_PORT
+            - name: CRON_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-metrics
+                  key: CRON_INTERVAL

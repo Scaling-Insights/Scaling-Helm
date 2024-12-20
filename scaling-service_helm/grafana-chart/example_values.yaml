@@ -1,0 +1,12 @@
+dashboard:
+  service:
+    nodePort: 30082
+
+
+grafana:
+  adminUser: 
+  adminPassword: 
+  tolerations:
+    - key: "Managing"
+      operator: "Exists"
+      effect: "NoSchedule"

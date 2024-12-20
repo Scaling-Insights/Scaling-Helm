@@ -1,0 +1,44 @@
+metrics:
+  image: 
+
+  service:
+    port: 3000
+    nodePort: 30085
+    
+  environment:
+    cron:
+      interval: 60
+    promql:
+      total_cpu: # PromQL query to get the total amount of CPU cores
+      avg_cpu: # PromQL query to get the CPU usage percentage
+      total_ram: # PromQL query to get the total amount of RAM in bytes
+      avg_ram: # PromQL query to get the RAM usage in bytes
+      avg_request: # PromQL query to get the amount of requests per minute
+      avg_request_latency: # PromQL query to get the average request latency in seconds
+
+
+
+  tolerations:
+    - key: "Managing"
+      operator: "Exists"
+      effect: "NoSchedule"
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "Managing-node"
+                operator: In
+                values:
+                - "true"
+
+
+postgresql:
+  auth:
+    username:
+    password: 
+    database: 
+  service:
+    port: 5432
+    name: -postgresql # name of the database installation

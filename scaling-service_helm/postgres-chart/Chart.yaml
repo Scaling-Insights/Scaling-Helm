@@ -1,0 +1,10 @@
+apiVersion: v2
+name: metrics
+description: Metrics database only
+version: 0.0.1
+appVersion: 0.0.1
+
+dependencies:
+  - name: postgresql
+    version: 16.2.2
+    repository: https://charts.bitnami.com/bitnami
