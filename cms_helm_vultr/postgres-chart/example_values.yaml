@@ -1,0 +1,32 @@
+postgresql:
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: latest
+  auth:
+    username:
+    password:
+    database:
+  service:
+    port: 5432
+  primary:
+    persistence:
+      enabled: true
+      existingClaim: ""
+      storageClass: hostpath
+      accessModes:
+        - ReadWriteOnce
+      size: 5Gi
+    tolerations:
+      - key: "Managing"
+        operator: "Exists"
+        effect: "NoSchedule"
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: "Managing-node"
+                  operator: In
+                  values:
+                    - "true"

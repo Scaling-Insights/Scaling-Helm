@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api
+  labels:
+    app: {{ .Release.Name }}-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-api
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-api
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.api.image }}
+          ports:
+            - containerPort: {{ .Values.api.service.port }}
+          env:
+            - name: CLOUDFLARE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: CLOUDFLARE_KEY
+            - name: CLOUDFLARE_UID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: CLOUDFLARE_UID
+            - name: CLOUDFLARE_EXPIRES_IN
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: CLOUDFLARE_EXPIRES_IN
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: DB_HOST
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: DB_PASSWORD
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: DB_DATABASE
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: DB_PORT
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: JWT_SECRET
+            - name: JWT_EXPIRES_IN
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: JWT_EXPIRES_IN
+            - name: R2_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: R2_ENDPOINT
+            - name: R2_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: R2_ACCESS_KEY_ID
+            - name: R2_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: R2_SECRET_ACCESS_KEY
+            - name: R2_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: R2_REGION
+            - name: R2_BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: R2_BUCKET_NAME
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: CORS_ALLOWED_ORIGINS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-api
+                  key: CORS_ALLOWED_ORIGINS

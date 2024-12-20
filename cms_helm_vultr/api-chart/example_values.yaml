@@ -1,0 +1,28 @@
+api:
+  image:
+  service:
+    port: 3000
+    nodePort: 30081
+  environment:
+    jwt:
+      secret: # Secret key to sign JWT tokens with
+      expiresIn: # Expiration time for JWT tokens
+    r2:
+      endpoint:
+      accessKeyId:
+      secretAccessKey:
+      region:
+      bucketName:
+    cloudflare:
+      expiresIn: # Seconds until the Cloudflare token expires (R2 & Stream)
+      key:
+      uid:
+
+postgresql:
+  auth:
+    username:
+    password:
+    database:
+  service:
+    port: 5432
+    name: -postgress # name of the database installation

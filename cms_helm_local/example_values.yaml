@@ -1,0 +1,53 @@
+api:
+  image:
+  service:
+    port: 3000
+    nodePort: 30081
+  environment:
+    jwt:
+      secret: SuperMegaUltraGeheimeLangeSecretKey # Secret key to sign JWT tokens with
+      expiresIn: 1d # Expiration time for JWT tokens
+    r2:
+      endpoint:
+      accessKeyId:
+      secretAccessKey:
+      region:
+      bucketName:
+    cloudflare:
+      expiresIn: # Seconds until the Cloudflare token expires (R2 & Stream)
+      key:
+      uid:
+    cors:
+      allowedOrigins:
+        - http://localhost:3000
+        - http://localhost:30080
+
+client:
+  image:
+  service:
+    port: 3000 # Port to expose the service on in the cluster
+    nodePort: 30080 # Port to expose the service on from outside the cluster
+
+postgresql:
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: latest
+  auth:
+    username:
+    password:
+    database:
+  service:
+    port: 5432
+  primary:
+    persistence:
+      enabled: true
+      existingClaim: ""
+      storageClass: hostpath
+      accessModes:
+        - ReadWriteOnce
+      size: 5Gi
+    tolerations:
+      - key: "node.kubernetes.io/disk-pressure"
+        operator: "Exists"
+        effect: "NoSchedule"

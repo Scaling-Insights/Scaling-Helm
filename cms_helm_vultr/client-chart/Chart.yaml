@@ -1,0 +1,5 @@
+apiVersion: v2
+name: cms-frontend
+description: Frontend only!
+version: 0.0.1
+appVersion: 0.0.1
