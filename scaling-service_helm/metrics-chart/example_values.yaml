@@ -7,14 +7,15 @@ metrics:
     
   environment:
     cron:
-      interval: 60
+      interval: 60            # Interval in seconds to run the cron job
     promql:
-      total_cpu: # PromQL query to get the total amount of CPU cores
-      avg_cpu: # PromQL query to get the CPU usage percentage
-      total_ram: # PromQL query to get the total amount of RAM in bytes
-      avg_ram: # PromQL query to get the RAM usage in bytes
-      avg_request: # PromQL query to get the amount of requests per minute
-      avg_request_latency: # PromQL query to get the average request latency in seconds
+    node_count:               # PromQL query to get the amount of nodes
+      total_cpu:              # PromQL query to get the total amount of CPU cores
+      avg_cpu:                # PromQL query to get the CPU usage percentage
+      total_ram:              # PromQL query to get the total amount of RAM in bytes
+      avg_ram:                # PromQL query to get the RAM usage in bytes
+      avg_request:            # PromQL query to get the amount of requests per minute
+      avg_request_latency:    # PromQL query to get the average request latency in seconds
 
 
 
