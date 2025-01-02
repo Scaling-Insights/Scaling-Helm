@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: prediction-component
+          image: {{ .Values.predictionComponent.image }}
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DB_PASSWORD
+            - name: FORECAST_STEPS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: FORECAST_STEPS
+            - name: FORECAST_FREQUENCY_MINUTES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: FORECAST_FREQUENCY_MINUTES
+            - name: FORECAST_INTERVAL_MINUTES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: FORECAST_INTERVAL_MINUTES
+            - name: ICC_MAX_ATTEMPTS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: ICC_MAX_ATTEMPTS
+            - name: ICC_RETRY_INTERVAL_SECONDS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: ICC_RETRY_INTERVAL_SECONDS
+            - name: ICC_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: ICC_HOST

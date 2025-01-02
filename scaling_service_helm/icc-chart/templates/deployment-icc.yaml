@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: icc
+          image: {{ .Values.icc.image }}
+          ports:
+            - containerPort: {{ .Values.icc.service.port }}
+          env:
+            - name: VULTR_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: VULTR_API_KEY

@@ -1,0 +1,10 @@
+apiVersion: v2
+name: ss-metrics
+description: Chart for deploying Scaling service metrics.
+version: 1.0.0
+appVersion: 0.0.1
+
+dependencies:
+  - name: postgresql
+    version: 16.2.2
+    repository: https://charts.bitnami.com/bitnami

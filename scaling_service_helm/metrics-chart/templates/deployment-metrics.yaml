@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      tolerations:
+        - key: "Managing"
+          operator: "Exists"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "Managing-node"
+                    operator: In
+                    values:
+                      - "true"
+
+      containers:
+        - name: metrics
+          image: {{ .Values.metrics.image }}
+          ports:
+            - containerPort: {{ .Values.metrics.service.port }}
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DB_HOST
+
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DB_USER
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DB_PASSWORD
+
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DB_DATABASE
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DB_PORT
+
+            - name: REQ_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: REQ_INTERVAL
+            
+            - name: PROM_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: PROM_URL
+
+            - name: PROMQL_NODE_COUNT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: PROMQL_NODE_COUNT
+                  
+            - name: PROMQL_TOTAL_CPU
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: PROMQL_TOTAL_CPU
+
+            - name: PROMQL_AVG_CPU
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: PROMQL_AVG_CPU
+
+            - name: PROMQL_TOTAL_RAM
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: PROMQL_TOTAL_RAM
+
+            - name: PROMQL_AVG_RAM
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: PROMQL_AVG_RAM
+
+            - name: PROMQL_AVG_REQUEST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: PROMQL_AVG_REQUEST
+
+            - name: PROMQL_AVG_REQUEST_LATENCY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: PROMQL_AVG_REQUEST_LATENCY

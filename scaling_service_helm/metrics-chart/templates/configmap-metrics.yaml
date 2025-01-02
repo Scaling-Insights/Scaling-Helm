@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}
+data:
+  DB_HOST: {{ .Release.Name }}-postgresql
+  DB_USER: {{ .Values.postgresql.auth.username }}
+  DB_DATABASE: {{ .Values.postgresql.auth.database }}
+  DB_PASSWORD: {{ .Values.postgresql.auth.password}}
+  DB_PORT: "{{ .Values.postgresql.service.port }}"
+  REQ_INTERVAL: "{{ .Values.metrics.environment.req.interval}}"
+  PROM_URL: "{{ .Values.metrics.environment.prometheus.url }}"
+  PROMQL_NODE_COUNT: '{{ .Values.metrics.environment.promql.node_count }}'
+  PROMQL_TOTAL_CPU: '{{ .Values.metrics.environment.promql.total_cpu }}'
+  PROMQL_AVG_CPU: '{{ .Values.metrics.environment.promql.avg_cpu }}'
+  PROMQL_TOTAL_RAM: '{{ .Values.metrics.environment.promql.total_ram }}'
+  PROMQL_AVG_RAM: '{{ .Values.metrics.environment.promql.avg_ram }}'
+  PROMQL_AVG_REQUEST: '{{ .Values.metrics.environment.promql.avg_request }}'
+  PROMQL_AVG_REQUEST_LATENCY: '{{ .Values.metrics.environment.promql.avg_request_latency }}'
+
+

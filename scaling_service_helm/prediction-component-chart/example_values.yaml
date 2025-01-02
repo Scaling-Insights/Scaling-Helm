@@ -1,0 +1,17 @@
+predictionComponent:
+  image:
+  environment:
+    icc:
+      maxAttempts: 3
+      retryIntervalSeconds: 15
+      host: icc
+    forecast:
+      steps: 12
+      frequencyMinutes: 5
+      intervalMinutes: 5
+    database:
+      host: metrics-postgresql
+      port: 5432
+      username: admin
+      password: admin
+      database: admin

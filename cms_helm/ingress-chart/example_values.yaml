@@ -1,0 +1,12 @@
+ingress:
+  host: example.com # Domain name
+  apiService: api # Release name of cms api
+  clientService: client # Release name of cms client
+  dashboardService: dashboard-grafana # name of cms dashboard service (Releasename-grafana)
+
+nginx-ingress:
+  controller:
+    enableLatencyMetrics: true
+  prometheus:
+    service:
+      create: true

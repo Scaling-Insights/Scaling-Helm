@@ -1,0 +1,10 @@
+apiVersion: v2
+name: cms-backend
+description: Chart for deploying the CMS backend
+version: 1.0.0
+appVersion: 0.0.1
+
+dependencies:
+  - name: postgresql
+    version: 16.2.2
+    repository: https://charts.bitnami.com/bitnami

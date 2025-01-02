@@ -1,0 +1,5 @@
+apiVersion: v2
+name: cms-frontend
+description: Chart for deploying the CMS frontend
+version: 1.0.0
+appVersion: 0.0.1

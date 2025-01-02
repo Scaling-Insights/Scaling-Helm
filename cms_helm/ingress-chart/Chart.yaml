@@ -1,0 +1,10 @@
+apiVersion: v2
+name: ingress
+description: Ingress for the Scaling service and CMS
+version: 1.0.0
+appVersion: 0.0.1
+
+dependencies:
+- name: nginx-ingress
+  version: 2.0.0
+  repository: oci://ghcr.io/nginxinc/charts/nginx-ingress

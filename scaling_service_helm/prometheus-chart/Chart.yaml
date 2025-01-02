@@ -1,0 +1,10 @@
+apiVersion: v2
+name: ss-prometheus
+description: Chart for scaling service Prometheus.
+version: 1.0.0
+appVersion: 0.0.1
+
+dependencies:
+  - name: prometheus
+    version: 26.0.1
+    repository: https://prometheus-community.github.io/helm-charts
