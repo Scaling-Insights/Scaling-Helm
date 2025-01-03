@@ -1,6 +1,6 @@
 grafana:
-  adminUser: admin
-  adminPassword: admin123
+  adminUser:                  # Username for the admin user
+  adminPassword:              # Password for the admin user
   tolerations:
     - key: "Managing"
       operator: "Exists"
