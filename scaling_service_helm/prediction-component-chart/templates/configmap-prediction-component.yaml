@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}
 data:
-  DB_HOST: {{ .Release.Name }}-postgresql
+  DB_HOST: {{ .Values.predictionComponent.environment.database.host }}
   DB_PORT: "{{ .Values.predictionComponent.environment.database.port }}"
   DB_NAME: {{ .Values.predictionComponent.environment.database.database }}
   DB_USER: {{ .Values.predictionComponent.environment.database.username }}
@@ -11,5 +11,5 @@ data:
   FORECAST_FREQUENCY_MINUTES: "{{ .Values.predictionComponent.environment.forecast.frequencyMinutes }}"
   FORECAST_INTERVAL_MINUTES: "{{ .Values.predictionComponent.environment.forecast.intervalMinutes }}"
   ICC_MAX_ATTEMPTS: "{{ .Values.predictionComponent.environment.icc.maxAttempts }}"
-  ICC_RETRY_INTERVAL_SECONDS: "{{ .Values.predictionComponent.environment.icc.retryIntervalSeconds }}
-  ICC_HOST: {{ .Values.predictionComponent.environment.icc.host }}"
+  ICC_RETRY_INTERVAL_SECONDS: "{{ .Values.predictionComponent.environment.icc.retryIntervalSeconds }}"
+  ICC_HOST: "{{ .Values.predictionComponent.environment.icc.host }}"

@@ -2,7 +2,7 @@ prometheus:
   server:
     name: prometheus
     persistentVolume:
-      enabled: false
+      enabled: false # Set to true and get rid of emptydir setting when running local
     emptyDir:
       sizeLimit: ""
     tolerations:
@@ -20,3 +20,8 @@ prometheus:
                     - "true"
   alertmanager:
     enabled: false
+
+  prometheus-node-exporter:
+    enabled: true
+    hostRootFsMount:
+      enabled: false
