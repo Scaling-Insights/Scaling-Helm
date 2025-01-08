@@ -20,8 +20,53 @@ spec:
           ports:
             - containerPort: {{ .Values.icc.service.port }}
           env:
+            - name: MAIN_NODEPOOL_TAG
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: MAIN_NODEPOOL_TAG
+            - name: VKE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}
+                  key: VKE_ID    
             - name: VULTR_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
-                  key: VULTR_API_KEY
+                  key: VULTR_API_KEY                                
+            - name: SCALING_MARGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: SCALING_MARGIN
+            - name: REMOVE_AFTER_MINUTE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: REMOVE_AFTER_MINUTE
+            - name: REMOVE_BEFORE_MINUTE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: REMOVE_BEFORE_MINUTE
+            - name: MINUTES_BETWEEN_ITERATION
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: MINUTES_BETWEEN_ITERATION
+            - name: DEFAULT_MINIMUM_NODES_ON_NEW_NODEPOOL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DEFAULT_MINIMUM_NODES_ON_NEW_NODEPOOL
+            - name: DEFAULT_MAXIMUM_NODES_ON_NEW_NODEPOOL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: DEFAULT_MAXIMUM_NODES_ON_NEW_NODEPOOL         
+            - name: MINIMUM_INDEX_LENGTH_FOR_FORECAST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: MINIMUM_INDEX_LENGTH_FOR_FORECAST              

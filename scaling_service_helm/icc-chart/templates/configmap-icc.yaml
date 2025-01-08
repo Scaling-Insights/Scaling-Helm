@@ -3,3 +3,10 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}
 data:
+  SCALING_MARGIN: {{ .Values.icc.config.scalingMargin }}
+  REMOVE_AFTER_MINUTE: {{ .Values.icc.config.removeAfterMinute }}
+  REMOVE_BEFORE_MINUTE: {{ .Values.icc.config.removeBeforeMinute }}
+  MINUTES_BETWEEN_ITERATION: {{ .Values.icc.config.minutesBetweenIteration }}
+  DEFAULT_MINIMUM_NODES_ON_NEW_NODEPOOL: {{ .Values.icc.config.defaultMinimumNodesOnNewNodepool }}
+  DEFAULT_MAXIMUM_NODES_ON_NEW_NODEPOOL: {{ .Values.icc.config.defaultMaximumNodesOnNewNodepool }}
+  MINIMUM_INDEX_LENGTH_FOR_FORECAST: {{ .Values.icc.config.minimumIndexLengthForForecast }}

@@ -1,5 +1,5 @@
 apiVersion: v2
 name: ss-icc
-description: Chart for deploying Scaling service icc.
+description: Chart for deploying Scaling service index calculation component (ICC).
 version: 1.0.0
 appVersion: 0.0.1
