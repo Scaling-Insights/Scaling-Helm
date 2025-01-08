@@ -10,6 +10,8 @@ data:
   FORECAST_STEPS: "{{ .Values.predictionComponent.environment.forecast.steps }}"
   FORECAST_FREQUENCY_MINUTES: "{{ .Values.predictionComponent.environment.forecast.frequencyMinutes }}"
   FORECAST_INTERVAL_MINUTES: "{{ .Values.predictionComponent.environment.forecast.intervalMinutes }}"
+  ERROR_CALCULATION_INTERVAL_MINUTES: "{{ .Values.predictionComponent.environment.errorCalculation.intervalMinutes }}"
+  ERROR_CALCULATION_AGE_MINUTES: "{{ .Values.predictionComponent.environment.errorCalculation.minAge }}"
   ICC_MAX_ATTEMPTS: "{{ .Values.predictionComponent.environment.icc.maxAttempts }}"
   ICC_RETRY_INTERVAL_SECONDS: "{{ .Values.predictionComponent.environment.icc.retryIntervalSeconds }}"
   ICC_HOST: "{{ .Values.predictionComponent.environment.icc.host }}"

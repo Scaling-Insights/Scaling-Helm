@@ -83,6 +83,16 @@ spec:
                 configMapKeyRef:
                   name: {{ .Release.Name }}
                   key: FORECAST_INTERVAL_MINUTES
+            - name: ERROR_CALCULATION_INTERVAL_MINUTES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: ERROR_CALCULATION_INTERVAL_MINUTES
+            - name: ERROR_CALCULATION_AGE_MINUTES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}
+                  key: ERROR_CALCULATION_AGE_MINUTES
             - name: ICC_MAX_ATTEMPTS
               valueFrom:
                 configMapKeyRef:

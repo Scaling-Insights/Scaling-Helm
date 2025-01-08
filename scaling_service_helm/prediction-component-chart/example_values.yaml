@@ -9,6 +9,9 @@ predictionComponent:
       steps: 12
       frequencyMinutes: 5
       intervalMinutes: 5
+    errorCalculation:
+      intervalMinutes: 5
+      minAge: 0
     database:
       host: metrics-postgresql
       port: 5432
