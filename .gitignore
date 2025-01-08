@@ -1,2 +1,3 @@
 **/values.yaml
 .DS_Store
+scaling_service_helm/prometheus-chart/templates/configmap-alertmanager.yaml
