@@ -1,0 +1,41 @@
+apiVersion: "descheduler/v1alpha2"
+kind: "DeschedulerPolicy"
+profiles:
+  - name: DefaultEvictor
+    pluginConfig:
+    - name: "DefaultEvictor"
+      args:
+        nodeFit: true
+  - name: "Low Cpu Utilization"
+    pluginConfig:
+    - name: "LowNodeUtilization"
+      args:
+        thresholds:
+          "cpu" : 30
+          "memory": 30
+        targetThresholds:
+          "cpu" : 75
+          "memory": 75
+  - name: "Improve Topology Spread"
+    pluginConfig:
+    - name: "RemovePodsViolatingTopologySpreadConstraint"
+      args:
+        constraints:
+          - DoNotSchedule
+          - ScheduleAnyway
+  - name: "Restart pending/initializing pods"
+    pluginConfig:
+    - name: "PodLifeTime"
+      args:
+        maxPodLifeTimeSeconds: 86400
+        states:
+        - "Pending"
+        - "PodInitializing"
+    plugins:
+      balance:
+        enabled:
+          - "LowNodeUtilization"
+          - "RemovePodsViolatingTopologySpreadConstraint"
+      deschedule:
+        enabled:
+          - "PodLifeTime"
