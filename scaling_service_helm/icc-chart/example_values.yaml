@@ -5,7 +5,7 @@ icc:
     nodePort: 30091
   environment:
     vultr:
-      mainNodepoolTag: #The tag of the main nodepool that needs to be excluded from scaling
+      ignoredNodepoolTags: #The tag of the main nodepool that needs to be excluded from scaling
       vkeID: #Id of the cluster
       apikey: #API key to use for Vultr API calls
   config:

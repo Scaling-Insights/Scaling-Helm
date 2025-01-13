@@ -27,21 +27,23 @@ spec:
                     operator: In
                     values:
                       - "true"
+
       containers:
         - name: metrics
           image: {{ .Values.metrics.image }}
           livenessProbe:
             httpGet:
-              path: /healthz
+              path: /health/healthz
               port: 3000
             initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /healthz
+              path: /health/healthz
               port: 3000
             initialDelaySeconds: 5
             periodSeconds: 10
+
           ports:
             - containerPort: {{ .Values.metrics.service.port }}
           env:

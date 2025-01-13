@@ -14,27 +14,40 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
+      tolerations:
+        - key: "Managing"
+          operator: "Exists"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "Managing-node"
+                    operator: In
+                    values:
+                      - "true"
       containers:
         - name: icc
           image: {{ .Values.icc.image }}
           ports:
             - containerPort: {{ .Values.icc.service.port }}
           env:
-            - name: MAIN_NODEPOOL_TAG
+            - name: IGNORED_NODEPOOL_TAGS
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
-                  key: MAIN_NODEPOOL_TAG
+                  key: IGNORED_NODEPOOL_TAGS
             - name: VKE_ID
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
                   key: VKE_ID    
-            - name: VULTR_API_KEY
+            - name: API_KEY_VULTR
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}
-                  key: VULTR_API_KEY                                
+                  key: API_KEY_VULTR                                
             - name: SCALING_MARGIN
               valueFrom:
                 configMapKeyRef:
