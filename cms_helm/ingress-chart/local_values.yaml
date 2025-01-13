@@ -1,0 +1,12 @@
+ingress:
+  host: localhost
+  apiService: api
+  clientService: client
+  dashboardService: dashboard-grafana
+
+nginx-ingress:
+  controller:
+    enableLatencyMetrics: true
+  prometheus:
+    service:
+      create: true

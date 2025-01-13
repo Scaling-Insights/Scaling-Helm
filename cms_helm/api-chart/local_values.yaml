@@ -1,0 +1,69 @@
+api:
+  image: api:1.0
+  service:
+    port: 3000
+  environment:
+    jwt:
+      secret: secret # Secret key to sign JWT tokens with
+      expiresIn: 60 # Expiration time for JWT tokens
+    r2:
+      endpoint: secret
+      accessKeyId: secret
+      secretAccessKey: secret
+      region: secret
+      bucketName: secret
+    cloudflare:
+      expiresIn: "60" # Seconds until the Cloudflare token expires (R2 & Stream)
+      key: secret
+      uid: secret
+    cors: 
+      allowedOrigins:
+        - http://localhost:80
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 1256Mi
+    
+hpa: 
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 700
+
+postgresql:
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: latest
+  auth:
+    username: admin
+    password: admin
+    database: postgresql
+  service:
+    port: 5432
+  primary:
+    persistence:
+      enabled: true
+      existingClaim: ""
+      storageClass: hostpath
+      accessModes:
+        - ReadWriteOnce
+      size: 5Gi
+      
+    tolerations:
+      - key: "Managing"
+        operator: "Exists"
+        effect: "NoSchedule"
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: "Managing-node"
+                  operator: In
+                  values:
+                    - "true"
+

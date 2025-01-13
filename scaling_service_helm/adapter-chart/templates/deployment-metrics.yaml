@@ -27,7 +27,15 @@ spec:
                     operator: In
                     values:
                       - "true"
-
+      initContainers:
+        - name: wait-for-database
+          image: busybox
+          command: 
+            - sh
+            - -c
+            - >-
+              until nc -z -v -w30 {{ .Release.Name }}-postgresql {{ .Values.postgresql.service.port }};
+              do echo 'Waiting for database...'; sleep 5; done;
       containers:
         - name: metrics
           image: {{ .Values.metrics.image }}

@@ -1,0 +1,7 @@
+grafana:
+  adminUser: admin
+  adminPassword: admin123
+  tolerations:
+    - key: "Managing"
+      operator: "Exists"
+      effect: "NoSchedule"

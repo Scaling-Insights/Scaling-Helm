@@ -1,0 +1,17 @@
+client:
+  image: client:1.0
+  service:
+    port: 3000 # Port to expose the service on in the cluster
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 1256Mi
+    
+hpa: 
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 750

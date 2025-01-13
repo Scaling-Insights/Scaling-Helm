@@ -1,0 +1,53 @@
+metrics:
+  image: metrics:1.0
+
+  service:
+    port: 3000
+    
+  environment:
+    req:
+      interval: 60
+    prometheus:
+      url: http://prometheus-prometheus-prometheus.default.svc.cluster.local/api/v1/query
+    promql:
+      node_count: count(kube_node_info{instance!~"10.7.96.5.*|10.7.96.7.*"}) # PromQL query to get the amount of nodes
+      total_cpu: count(count(node_cpu_seconds_total{instance!~"10.7.96.5:9100|10.7.96.7:9100"}) by (cpu, instance)) # PromQL query to get the total amount of CPU cores
+      avg_cpu: 100 - (avg by (job) (rate(node_cpu_seconds_total{mode="idle", node!="10.7.96.5:9100|10.7.96.7:9100"}[2m])) * 100) # PromQL query to get the CPU usage percentage
+      total_ram: node_memory_MemTotal_bytes{instance!~"10.7.96.5:9100|10.7.96.7:9100"} # PromQL query to get the total amount of RAM in bytes
+      avg_ram: sum(node_memory_MemTotal_bytes{instance!~"10.7.96.5:9100|10.7.96.7:9100"} - (node_memory_MemFree_bytes{instance!~"10.7.96.5:9100|10.7.96.7:9100"} + node_memory_Cached_bytes{instance!~"10.7.96.5:9100|10.7.96.7:9100"} + node_memory_Buffers_bytes{instance!~"10.7.96.5:9100|10.7.96.7:9100"})) # PromQL query to get the RAM usage in bytes
+      avg_request: sum by (job) (rate(http_requests_total{instance!~"10.7.96.5:9100|10.7.96.7:9100"}[1m])) # PromQL query to get the amount of requests per minute
+      avg_request_latency: sum(rate(http_request_duration_seconds_sum{instance!~"10.7.96.5:9100|10.7.96.7:9100"}[1m])) / sum(rate(http_request_duration_seconds_count{instance!~"10.7.96.5:9100|10.7.96.7:9100"}[1m])) # PromQL query to get the average request latency in seconds
+
+postgresql:
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: latest
+  auth:
+    username: secret
+    password: secret
+    database: postgresql
+  service:
+    port: 5432
+  primary:
+    persistence:
+      enabled: true
+      existingClaim: ""
+      storageClass: hostpath
+      accessModes:
+        - ReadWriteOnce
+      size: 5Gi
+
+    tolerations:
+      - key: "Managing"
+        operator: "Exists"
+        effect: "NoSchedule"
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: "Managing-node"
+                  operator: In
+                  values:
+                    - "true"

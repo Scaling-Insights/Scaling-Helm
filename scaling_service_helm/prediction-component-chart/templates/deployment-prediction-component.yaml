@@ -27,6 +27,15 @@ spec:
                     operator: In
                     values:
                       - "true"
+      initContainers:
+        - name: wait-for-database
+          image: busybox
+          command: 
+            - sh
+            - -c
+            - >-
+              until nc -z -v -w30 {{ .Values.predictionComponent.environment.database.host }} {{ .Values.predictionComponent.environment.database.port }};
+              do echo 'Waiting for database...'; sleep 5; done;
       containers:
         - name: prediction-component
           image: {{ .Values.predictionComponent.image }}
