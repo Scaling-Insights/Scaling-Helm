@@ -2,7 +2,6 @@ icc:
   image:
   service:
     port: 3000
-    nodePort: 30091
   environment:
     vultr:
       ignoredNodepoolTags: #The tag of the main nodepool that needs to be excluded from scaling
