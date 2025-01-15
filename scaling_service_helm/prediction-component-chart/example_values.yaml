@@ -1,20 +1,23 @@
 predictionComponent:
-  image:
+  image:                            # The image of the prediction component 
   environment:
     icc:
-      maxAttempts: 3
-      retryIntervalSeconds: 15
-      host: icc
+      maxAttempts: 3                # The maximum number of attempts to make to the ICC before giving up
+      retryIntervalSeconds: 15      # The interval between attempts to the ICC
+      host: http://icc.scaling.svc.cluster.local/calculate # The link to the ICC endpoint
+
     forecast:
-      steps: 12
-      frequencyMinutes: 5
-      intervalMinutes: 5
+      steps: 12                     # The number of steps to forecast
+      frequencyMinutes: 5           # Time between forecasting steps in minutes
+      intervalMinutes: 5            # Time between forecasting in minutes
+
     errorCalculation:
-      intervalMinutes: 5
-      minAge: 0
-    database:
-      host: metrics-postgresql
-      port: 5432
-      username: admin
-      password: admin
-      database: admin
+      intervalMinutes: 5            # Time between error calculation in minutes
+      minAge: 0                     # Minimum age of last prediction in the prediction row (minimum is half of the interval from Adapter)
+
+    database:                       # The database connection details - should be the same as in the adapter-chart values.yaml
+      host: adapter-postgresql      # The host of the database
+      port: 5432                    # The port of the database
+      username: admin               # The username of the database
+      password: admin               # The password of the database
+      database: admin               # The database name

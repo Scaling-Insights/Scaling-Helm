@@ -1,7 +1,7 @@
 grafana:
   adminUser:                  # Username for the admin user
   adminPassword:              # Password for the admin user
-  tolerations:
+  tolerations:                # Tolerations for the pod so it deploys on the main node
     - key: "Managing"
       operator: "Exists"
       effect: "NoSchedule"

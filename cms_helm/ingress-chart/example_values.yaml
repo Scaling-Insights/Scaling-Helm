@@ -7,11 +7,11 @@ ingress:
 nginx-ingress:
   controller:
     enableLatencyMetrics: true
-    tolerations:
+    tolerations:    # Tolerations for the ingress pod - should not be changed unless PostgreSQL has to be scheduled on a other node than the managing node 
       - key: "Managing"
         operator: "Exists"
         effect: "NoSchedule"
-    affinity:
+    affinity:       # Affinity for the ingress pod - should not be changed unless PostgreSQL has to be scheduled on a other node than the managing node
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:

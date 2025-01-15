@@ -2,14 +2,17 @@ prometheus:
   server:
     name: prometheus
     persistentVolume:
-      enabled: false # Set to true and get rid of emptydir setting when running local
-    emptyDir:
-      sizeLimit: ""
-    tolerations:
+      enabled: true                       # Set to true and get rid of emptydir setting when running local
+      accessModes:
+        - ReadWriteOnce                   # Access mode for the persistent volume (default is ReadWriteOnce)
+      size: 8Gi                           # Recommended size for the persistent volume
+    # emptyDir:                           # Uncomment this if you decide to use emptyDir instead of persistentVolume
+    #   sizeLimit: ""
+    tolerations:                          # Tolerations for the Prometheus pod - should not be changed unless Prometheus has to be scheduled on a other node than the managing node
       - key: "Managing"
         operator: "Exists"
         effect: "NoSchedule"
-    affinity:
+    affinity:                             # Affinity for the Prometheus pod - should not be changed unless Prometheus has to be scheduled on a other node than the managing node
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
@@ -18,10 +21,72 @@ prometheus:
                   operator: In
                   values:
                     - "true"
-  alertmanager:
-    enabled: false
+    global:                               
+      scrape_interval: 10s                # Interval between scraping targets
+      scrape_timeout: 5s                  # Timeout for scraping targets
 
-  prometheus-node-exporter:
+  prometheusSpec:                         # Prometheus specific settings
+    additionalRuleSelector: {}
+    additionalScrapeConfigs:
+    ruleSelector:
+      matchLabels:
+        alerting-rules: "true"
+  
+  serverFiles:                            # Files for the Prometheus server
+    alerting_rules.yml:                   # Alerting rules for Prometheus - for changes check out the Installatie & Configuratie & Deployment handboek (6.2.2.2)
+      groups:
+        - name: cluster_alert
+          rules:
+            - alert: PodDead
+              expr: kube_pod_status_phase{phase="Failed"} == 1
+              for: 1m
+              annotations:
+                description: "Pod: {{ .Labels.pod }} in namespace {{ .Labels.namespace }} on instance {{ .Labels.instance }} is dead."
+
+  alertmanager:                           # Alertmanager settings
+    enabled: true
+    persistence:
+      size: 2Gi                           # Recommended size of the persistent volume for the Alertmanager
+    tolerations:                          # Tolerations for the Alertmanager pod - should not be changed unless Alertmanager has to be scheduled on a other node than the managing node
+      - key: "Managing"
+        operator: "Exists"
+        effect: "NoSchedule"
+    affinity:                             # Affinity for the Alertmanager pod - should not be changed unless Alertmanager has to be scheduled on a other node than the managing node
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: "Managing-node"
+                  operator: In
+                  values:
+                    - "true"
+    config:                               # Configuration for the Alertmanager - for changes check out the Installatie & Configuratie & Deployment handboek (6.2.2.1)
+      route:
+        receiver: 'discord'               # Name of the receiver
+        group_by: ['alertname']           # Group alerts by alertname      
+        group_wait: 30s                   # Wait 30 seconds to group alerts
+        group_interval: 1m                # Group alerts every minute       
+        repeat_interval: 2m               # Repeat alerts every 2 minutes      
+        routes:                           # Routes for the alerts
+          - match:
+              severity: critical  
+            receiver: 'discord'
+      receivers:
+        - name: 'discord'                   # Name of the receiver
+          discord_configs:                  
+            - webhook_url: ''               # Discord webhook URL
+
+        - name: 'gmail-notifications'       # Name of the receiver
+          email_configs:
+          - to:                             # Send alert to this mail
+            from:                           # Send alert from this mail
+            smarthost: smtp.gmail.com:587
+            auth_username:                  # Gmail account username
+            auth_identity:                  # Gmail account username
+            auth_password:                  # Gmail account password
+            send_resolved: true
+
+  prometheus-node-exporter:                 # Node exporter settings
     enabled: true
     hostRootFsMount:
       enabled: false

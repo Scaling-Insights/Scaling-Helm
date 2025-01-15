@@ -4,14 +4,16 @@ icc:
     port: 3000
   environment:
     vultr:
-      ignoredNodepoolTags: #The tag of the main nodepool that needs to be excluded from scaling
-      vkeID: #Id of the cluster
-      apikey: #API key to use for Vultr API calls
+      ignoredNodepoolTags:                # The tags of that need to be excluded from scaling (tags can be specified from within Vultr dashboard)
+        - Database 
+        - Cache
+      vkeID:                              # ID of the cluster as specified by Vultr
+      apikey:                             # API key to use for Vultr API calls
   config:
-    scalingMargin: 0.95
-    removeAfterMinute: 50
-    removeBeforeMinute: 55
-    minutesBetweenIteration: 5
-    defaultMinimumNodesOnNewNodepool: 1
-    defaultMaximumNodesOnNewNodepool: 4
-    minimumIndexLengthForForecast: 3
+    scalingMargin: 0.95                   # The margin to scale with - increase if prediction model MAPE is too high
+    removeAfterMinute: 50                 # 
+    removeBeforeMinute: 55                # 
+    minutesBetweenIteration: 5            # The interval between iterations in minutes
+    defaultMinimumNodesOnNewNodepool: 1   # The default minimum amount of nodes on a nodepool
+    defaultMaximumNodesOnNewNodepool: 4   # The default maximum amount of nodes on a nodepool
+    minimumIndexLengthForForecast: 3      # The minimum amount of indexes needed for forecasting
